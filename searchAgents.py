@@ -372,7 +372,11 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-
+    #Đi tìm góc xa nhất của bản đồ
+    #Heuristic được tính bằng khoảng cách mê cung giữa góc xa nhất không được nhìn thấy này
+    #và vị trí hiện tại. Khoảng cách mê cung này đã được xác định là một hàm và sử dụng
+    #bfs trong nội bộ để biết thời lượng của các hành động ở mức xa nhất
+    #góc chưa được kiểm tra.
 
     heuristic = 0
 
@@ -474,12 +478,13 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-
+    #Heuristic được tính bằng khoảng cách mê cung giữa vị trí thức ăn xa nhất này
+    #và vị trí hiện tại. Khoảng cách mê cung này đã được xác định là một hàm và sử dụng
+    #bfs trong nội bộ để biết thời lượng của các hành động ở mức xa nhất tới thức ăn
 
     heuristic = 0
 
-    # For each food position in the list of food grid, calculate maze distances towards the
-    # current position. The maximum of these would be the farthest food point.
+
     for foodPos in foodGrid.asList():
         heuristic = max(heuristic, mazeDistance(foodPos, position, problem.startingGameState))
 
