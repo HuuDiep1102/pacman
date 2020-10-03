@@ -21,3 +21,24 @@ A* lưu giữ một tập các lời giải chưa hoàn chỉnh, nghĩa là các
 Trong đó, g(x) là chi phí của đường đi cho đến thời điểm hiện tại, nghĩa là tổng trọng số của các cạnh đã đi qua. h(x) là hàm đánh giá heuristic về chi phí nhỏ nhất để đến đích từ x. Ví dụ, nếu "chi phí" được tính là khoảng cách đã đi qua, khoảng cách đường chim bay giữa hai điểm trên một bản đồ là một đánh giá heuristic cho khoảng cách còn phải đi tiếp.
 
 Hàm f(x) có giá trị càng thấp thì độ ưu tiên của x càng cao (do đó có thể sử dụng một cấu trúc heap tối thiểu để cài đặt hàng đợi ưu tiên này).
+
+Thuật toán 5
+Đi timf tất cả các điểm thức ăn bằng bfs với 1 list các điểm
+
+Thuật toán 6
+Đi tìm góc xa nhất của bản đồ
+Heuristic được tính bằng khoảng cách mê cung giữa góc xa nhất không được nhìn thấy này
+và vị trí hiện tại. Khoảng cách mê cung này đã được xác định là một hàm và sử dụng
+bfs trong nội bộ để biết thời lượng của các hành động ở mức xa nhất
+góc chưa được kiểm tra.
+
+
+Thuật toán 7
+
+Đi tìm vị trí của cục thức ăn xa nhất
+Heuristic được tính bằng khoảng cách mê cung giữa vị trí thức ăn xa nhất này
+và vị trí hiện tại. Khoảng cách mê cung này đã được xác định là một hàm và sử dụng
+bfs trong nội bộ để biết thời lượng của các hành động ở mức xa nhất tới thức ăn
+( sử dụng vòng for để tìm ra điểm thức ăn xa nhất)
+
+
