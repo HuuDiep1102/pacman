@@ -288,6 +288,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        # Store the startingGameState to be used for mazeDistance() method
+        self.startingGameState = startingGameState
 
     def getStartState(self):
         """
@@ -295,14 +297,25 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # The state of CornersProblem is defined as a tuple of Pacman position
+        # and the collection of visited corners. Initially, the Pacman position is
+        # self.startingPosition and visited corners is empty
+        return self.startingPosition, ()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # The goal of CornersProblem is to visit each corner of the maze. Therefore,
+        # it is checked whether the number of visited corners is equal to the total
+        # number of corners of the maze. If yes, the goal is achieved and True is returned.
+        # Otherwise, False is returned.
+        #
+        # state[1] stores the visited corners
+        if len(self.corners) != len(state[1]):
+            return False
+        return True
 
     def getSuccessors(self, state):
         """
@@ -323,8 +336,23 @@ class CornersProblem(search.SearchProblem):
             #   dx, dy = Actions.directionToVector(action)
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
-
             "*** YOUR CODE HERE ***"
+
+            # The below code computes the successor states of the current position. If the
+            # next state is a corner and it has not been yet visited, it is added to the existing
+            # collection of visited corners.
+            #
+            # state[0] is the current position, state[1] is the visited corners collection
+            x, y = state[0]
+            visited = state[1]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+
+            if not self.walls[nextx][nexty]:
+                nextState = (nextx, nexty)
+                if nextState in self.corners and nextState not in state[1]:
+                    visited += (nextState,)
+                successors.append(((nextState, visited), action, 1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -360,7 +388,21 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    # The farthest unvisited corner is considered as the goal for this problem.
+    # The heuristic is calculated as the maze distance between this farthest unvisited corner
+    # and the current position. This maze distance is already defined as a function and uses
+    # breadth-first search internally to get the length of actions to the farthest
+    # unvisited corner.
+
+    heuristic = 0
+
+    # For each corner in the set of unvisited corners, calculate maze distances towards the
+    # current position. The maximum of these would be the farthest corner.
+    for corner in set(corners) ^ set(state[1]):
+        heuristic = max(heuristic, mazeDistance(corner, state[0], problem.startingGameState))
+
+    return heuristic
+
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -454,7 +496,21 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+
+    # The farthest food position is considered as the goal for this problem.
+    # The heuristic is calculated as the maze distance between this farthest food position
+    # and the current position. This maze distance is already defined as a function and uses
+    # breadth-first search internally to get the length of actions to the farthest
+    # food position.
+
+    heuristic = 0
+
+    # For each food position in the list of food grid, calculate maze distances towards the
+    # current position. The maximum of these would be the farthest food point.
+    for foodPos in foodGrid.asList():
+        heuristic = max(heuristic, mazeDistance(foodPos, position, problem.startingGameState))
+
+    return heuristic
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
