@@ -297,9 +297,7 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        # The state of CornersProblem is defined as a tuple of Pacman position
-        # and the collection of visited corners. Initially, the Pacman position is
-        # self.startingPosition and visited corners is empty
+
         return self.startingPosition, ()
 
     def isGoalState(self, state):
@@ -307,12 +305,7 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        # The goal of CornersProblem is to visit each corner of the maze. Therefore,
-        # it is checked whether the number of visited corners is equal to the total
-        # number of corners of the maze. If yes, the goal is achieved and True is returned.
-        # Otherwise, False is returned.
-        #
-        # state[1] stores the visited corners
+
         if len(self.corners) != len(state[1]):
             return False
         return True
@@ -330,19 +323,10 @@ class CornersProblem(search.SearchProblem):
 
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
+ 
             "*** YOUR CODE HERE ***"
 
-            # The below code computes the successor states of the current position. If the
-            # next state is a corner and it has not been yet visited, it is added to the existing
-            # collection of visited corners.
-            #
-            # state[0] is the current position, state[1] is the visited corners collection
+
             x, y = state[0]
             visited = state[1]
             dx, dy = Actions.directionToVector(action)
@@ -388,16 +372,10 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    # The farthest unvisited corner is considered as the goal for this problem.
-    # The heuristic is calculated as the maze distance between this farthest unvisited corner
-    # and the current position. This maze distance is already defined as a function and uses
-    # breadth-first search internally to get the length of actions to the farthest
-    # unvisited corner.
+
 
     heuristic = 0
 
-    # For each corner in the set of unvisited corners, calculate maze distances towards the
-    # current position. The maximum of these would be the farthest corner.
     for corner in set(corners) ^ set(state[1]):
         heuristic = max(heuristic, mazeDistance(corner, state[0], problem.startingGameState))
 
@@ -497,11 +475,6 @@ def foodHeuristic(state, problem):
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
 
-    # The farthest food position is considered as the goal for this problem.
-    # The heuristic is calculated as the maze distance between this farthest food position
-    # and the current position. This maze distance is already defined as a function and uses
-    # breadth-first search internally to get the length of actions to the farthest
-    # food position.
 
     heuristic = 0
 
